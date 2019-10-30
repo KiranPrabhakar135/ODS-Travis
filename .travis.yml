@@ -7,13 +7,15 @@ jdk:
 - openjdk8
 jobs:
   include:
-  - language:node_js
-    node_js: 10
-    before_script:
-    - cd src/main/react-front-end
-    - npm install
-    script:
-    - npm run build
+    - language: node_js
+      node_js: 10
+      before_script:
+      - cd src/main/react-front-end
+      - npm install
+      script:
+      - node -e "console.log('Hi from NodeJS!')"
+      - npm run build
+
 before_install:
 - echo "before_install"
 
