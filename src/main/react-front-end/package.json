@@ -47,7 +47,7 @@
     "build-win": "react-scripts build && rmdir /S /Q ..\\resources\\static && xcopy build ..\\resources\\static /E /I",
     "plain-build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject" 
   },
   "proxy": "http://localhost:8080/",
   "browserslist": [
