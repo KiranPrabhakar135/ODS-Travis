@@ -5,15 +5,15 @@ branches:
   - master
 jdk:
 - openjdk8
-matrix:
+jobs:
   include:
     - language:node_js
       node_js: 10
       before_script:
-        - cd src/main/react-front-end
-        - npm install
+      - cd src/main/react-front-end
+      - npm install
       script:
-        - npm run build
+      - npm run build
 before_install:
 - echo "before_install"
 
