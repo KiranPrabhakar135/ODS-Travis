@@ -5,18 +5,22 @@ branches:
   - master
 jdk:
 - openjdk8
-
+matrix:
+  include:
+    - language:node_js
+      node_js: 10
+      before_script:
+        - cd src/main/react-front-end
+        - npm install
+      script:
+        - npm run build
 before_install:
-- openssl aes-256-cbc -K $encrypted_fb365c1216b5_key -iv $encrypted_fb365c1216b5_iv -in anuj-ubuntu-keypair.pem.enc -out anuj-ubuntu-keypair.pem -d
-- eval "$(ssh-agent -s)"
-- chmod 600 anuj-ubuntu-keypair.pem
-- ssh-add anuj-ubuntu-keypair.pem
-- chmod +x mvnw
+- echo "before_install"
 
 deploy:
 - provider: script
   skip_cleanup: true
-  script: cd target && sudo scp -i ../anuj-ubuntu-keypair.pem  -o StrictHostKeyChecking=no -r *.jar ubuntu@ec2-34-202-237-229.compute-1.amazonaws.com:/home/Travis && ssh -n -f -i ../anuj-ubuntu-keypair.pem -o StrictHostKeyChecking=no ubuntu@ec2-34-202-237-229.compute-1.amazonaws.com 'cd /home/Travis && nohup java -jar *.jar > /dev/null 2>&1 &'
+  script: cd target && ls
   
 script: "./mvnw clean install"
 notifications:
