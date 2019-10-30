@@ -19,6 +19,8 @@ jobs:
       jdk: openjdk8
       before_script:
       - cd ../../../
+      - node -e "console.log('Started java build')"
+      - pwd
       script:
       - ./mvnw clean install
 
