@@ -27,12 +27,7 @@ jobs:
 before_install:
 - echo "before_install"
 
-deploy:
-- provider: script
-  skip_cleanup: true
-  script: cd target && ls
-  
-script: "./mvnw clean install"
+
 notifications:
   email:
     - kprabhak@buffalo.edu
