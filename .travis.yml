@@ -17,6 +17,7 @@ jobs:
       - npm run build
       after_script:
       - cd build && ls
+      
     - language: java
       jdk: openjdk8
       before_script:
