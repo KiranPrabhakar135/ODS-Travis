@@ -15,14 +15,18 @@ jobs:
       script:
       - node -e "console.log('Hi from NodeJS!')"
       - npm run build
+      after_script:
+      - cd build && ls
     - language: java
       jdk: openjdk8
       before_script:
-      - cd ../../../
-      - node -e "console.log('Started java build')"
+      - echo "starting java build"
+      - chmod +x mvnw
       - pwd
       script:
       - ./mvnw clean install
+      after_script:
+      - cd target && ls 
 
 before_install:
 - echo "before_install"
