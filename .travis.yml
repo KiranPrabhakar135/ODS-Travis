@@ -24,6 +24,7 @@ jobs:
       
     - language: java
       jdk: openjdk8
+      install: true
       script:
       - mvn package
       after_script:
@@ -35,7 +36,7 @@ jobs:
 
 before_install:
 - echo "before_install"
-
+- chmod +x mvnw
 
 notifications:
   email:
