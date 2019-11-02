@@ -35,7 +35,9 @@ jobs:
       - provider: script
         skip_cleanup: true
         script: echo "deploy of service"
-
+stages:
+  - front-end
+  - back-end
 before_install:
 - echo "before_install"
 - chmod +x mvnw
