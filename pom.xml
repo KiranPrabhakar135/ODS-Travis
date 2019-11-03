@@ -174,7 +174,7 @@
             <artifactId>globus-api</artifactId>
             <version>1.1-SNAPSHOT</version>
             <scope>system</scope>
-            <systemPath>${pom.basedir}/lib/globus-api-1.1-SNAPSHOT.jar</systemPath>
+            <systemPath>${basedir}/lib/globus-api-1.1-SNAPSHOT.jar</systemPath>
         </dependency>
 
         <dependency>
