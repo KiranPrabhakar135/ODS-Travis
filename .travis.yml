@@ -4,28 +4,13 @@ branches:
   - master
 jobs:
   include:
-    - stage: front-end
-      language: node_js
-      node_js: 10
-      before_script:
-      - cd src/main/react-front-end
-      - npm install
-      script:
-      - node -e "console.log('Hi from NodeJS!')"
-      - npm run build
-      after_script:
-      - cd build && ls
-      deploy:
-      - provider: script
-        skip_cleanup: true
-        script: echo "deploy of ui"
       
     - stage: back-end
       language: java
       jdk: openjdk8
       install: true
       script:
-      - mvn install:install-file -Dfile=./lib/globus-api-1.1-SNAPSHOT.jar -DgroupId=org.onedatashare.module -DartifactId=globus-api -Dversion=1.1-SNAPSHOT -Dpackaging=jar && mvn clean install
+      - mvn clean install
       after_script:
       - echo "After script service" && ls
       deploy:
@@ -42,6 +27,9 @@ before_install:
 - chmod 600 anuj-ubuntu-keypair.pem
 - ssh-add anuj-ubuntu-keypair.pem
 - chmod +x mvnw
+
+install:
+  - mvn install:install-file -Dfile=./lib/globus-api-1.1-SNAPSHOT.jar -DgroupId=org.onedatashare.module -DartifactId=globus-api -Dversion=1.1-SNAPSHOT -Dpackaging=jar -B -V
 
 notifications:
   email:
