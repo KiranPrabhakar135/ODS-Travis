@@ -39,8 +39,8 @@ before_install:
 - echo "before_install"
 - openssl aes-256-cbc -K $encrypted_fb365c1216b5_key -iv $encrypted_fb365c1216b5_iv -in anuj-ubuntu-keypair.pem.enc -out anuj-ubuntu-keypair.pem -d
 - eval "$(ssh-agent -s)"
-- chmod 600 ods-prod.pem
-- ssh-add ods-prod.pem
+- chmod 600 anuj-ubuntu-keypair.pem
+- ssh-add anuj-ubuntu-keypair.pem
 - chmod +x mvnw
 
 notifications:
