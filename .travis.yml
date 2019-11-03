@@ -31,7 +31,7 @@ jobs:
       deploy:
       - provider: script
         skip_cleanup: true
-        script: cd target && sudo scp -i ../anuj-ubuntu-keypair.pem -o StrictHostKeyChecking=no -r *.jar ubuntu@ec2-34-202-237-229.compute-1.amazonaws.com:/home/Travis-ODS && ssh -n -f -i -o StrictHostKeyChecking=no ubuntu@ec2-34-202-237-229.compute-1.amazonaws.com:/home/Travis-ODS './runProdServer.sh'
+        script: cd target && sudo scp -i ../anuj-ubuntu-keypair.pem -o StrictHostKeyChecking=no -r *.jar ubuntu@ec2-34-202-237-229.compute-1.amazonaws.com:/home/Travis-ODS && ssh -n -f -o StrictHostKeyChecking=no ubuntu@ec2-34-202-237-229.compute-1.amazonaws.com:/home/Travis-ODS './runProdServer.sh'
 stages:
   - front-end
   - back-end
