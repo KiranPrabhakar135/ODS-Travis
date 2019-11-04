@@ -4,6 +4,21 @@ branches:
   - master
 jobs:
   include:
+    - stage: front-end
+      language: node_js
+      node_js: 10
+      before_script:
+      - cd src/main/react-front-end
+      - npm install
+      script:
+      - node -e "console.log('Hi from NodeJS!')"
+      - npm run build
+      after_script:
+      - cd build && ls
+      deploy:
+      - provider: script
+        skip_cleanup: true
+        script: echo "deploy of ui"
       
     - stage: back-end
       language: java
@@ -18,7 +33,7 @@ jobs:
         skip_cleanup: true
         script: cd target && sudo scp -i ../anuj-ubuntu-keypair.pem -o StrictHostKeyChecking=no -r *.jar ubuntu@ec2-34-202-237-229.compute-1.amazonaws.com:/home/Travis-ODS && ssh -n -f -o StrictHostKeyChecking=no ubuntu@ec2-34-202-237-229.compute-1.amazonaws.com 'cd /home/Travis-ODS && ./runProdServer.sh'
 stages:
-  # - front-end
+  - front-end
   - back-end
 before_install:
 - echo "before_install"
