@@ -13,6 +13,10 @@ jobs:
       - mvn clean install
       after_script:
       - echo "After script service" && ls
+      - cd "/home/travis/.m2/repository/org/"
+      - echo "org directory.." && ls -l
+      - cd "/home/travis/.m2/repository/org/module/globus-api"
+      - echo "globus dir.." && ls -l
       deploy:
       - provider: script
         skip_cleanup: true
@@ -27,9 +31,8 @@ before_install:
 - chmod 600 anuj-ubuntu-keypair.pem
 - ssh-add anuj-ubuntu-keypair.pem
 - chmod +x mvnw
+- mvn install:install-file -Dfile=./lib/globus-api-1.1-SNAPSHOT.jar -DgroupId=org.onedatashare.module -DartifactId=globus-api -Dversion=1.1-SNAPSHOT -Dpackaging=jar -DgeneratePom=true -B -V
 
-install:
-  - mvn install:install-file -Dfile=./lib/globus-api-1.1-SNAPSHOT.jar -DgroupId=org.onedatashare.module -DartifactId=globus-api -Dversion=1.1-SNAPSHOT -Dpackaging=jar -DgeneratePom=true -B -V
 
 notifications:
   email:
