@@ -10,13 +10,9 @@ jobs:
       jdk: openjdk8
       install: true
       script:
-      - mvn clean install
+      - mvn package
       after_script:
       - echo "After script service" && ls
-      - cd "/home/travis/.m2/repository/org/"
-      - echo "org directory.." && ls -l
-      - cd "/home/travis/.m2/repository/org/module/globus-api"
-      - echo "globus dir.." && ls -l
       deploy:
       - provider: script
         skip_cleanup: true
