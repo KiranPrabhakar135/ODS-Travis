@@ -13,6 +13,11 @@ jobs:
       script:
       - node -e "console.log('Hi from NodeJS!')"
       - npm run build
+      - echo "removing old build"
+      - rm -rf ../resources/static
+      - echo "copying new build"
+      - cp -r build ../resources/static
+      - echo "copy completed"
       after_script:
       - cd build && ls
       deploy:
@@ -20,21 +25,21 @@ jobs:
         skip_cleanup: true
         script: echo "deploy of ui"
       
-    - stage: back-end
-      language: java
-      jdk: openjdk8
-      install: true
-      script:
-      - mvn package
-      after_script:
-      - echo "After script service" && ls
-      deploy:
-      - provider: script
-        skip_cleanup: true
-        script: cd target && sudo scp -i ../anuj-ubuntu-keypair.pem -o StrictHostKeyChecking=no -r *.jar ubuntu@ec2-34-202-237-229.compute-1.amazonaws.com:/home/Travis-ODS && ssh -n -f -o StrictHostKeyChecking=no ubuntu@ec2-34-202-237-229.compute-1.amazonaws.com 'cd /home/Travis-ODS && ./runProdServer.sh'
+    #- stage: back-end
+    #  language: java
+    #  jdk: openjdk8
+    #  install: true
+    #  script:
+    #  - mvn package
+    #  after_script:
+    #  - echo "After script service" && ls
+    #  deploy:
+    #  - provider: script
+    #    skip_cleanup: true
+    #    script: cd target && sudo scp -i ../anuj-ubuntu-keypair.pem -o StrictHostKeyChecking=no -r *.jar ubuntu@ec2-34-202-237-229.compute-1.amazonaws.com:/home/Travis-ODS && ssh -n -f -o StrictHostKeyChecking=no ubuntu@ec2-34-202-237-229.compute-1.amazonaws.com 'cd /home/Travis-ODS && ./runProdServer.sh'
 stages:
   - front-end
-  - back-end
+  # - back-end
 before_install:
 - echo "before_install"
 - openssl aes-256-cbc -K $encrypted_fb365c1216b5_key -iv $encrypted_fb365c1216b5_iv -in anuj-ubuntu-keypair.pem.enc -out anuj-ubuntu-keypair.pem -d
