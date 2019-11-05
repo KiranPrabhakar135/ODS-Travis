@@ -25,7 +25,7 @@ jobs:
       before_script:
       - echo "removing old build"
       - rm -rf src/main/resources/static
-      - sudo scp -i anuj-ubuntu-keypair.pem -o StrictHostKeyChecking=no -r ubuntu@ec2-34-202-237-229.compute-1.amazonaws.com:/home/Travis-ODS-UI/build src/main/resources/static"      
+      - sudo scp -i anuj-ubuntu-keypair.pem -o StrictHostKeyChecking=no -r ubuntu@ec2-34-202-237-229.compute-1.amazonaws.com:/home/Travis-ODS-UI/build src/main/resources/static    
       script:
       - mvn package
       after_script:
