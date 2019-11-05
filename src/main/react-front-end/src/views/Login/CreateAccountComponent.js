@@ -183,7 +183,7 @@ export default class CreateAccountComponent extends Component {
         <div className="enter-from-right slide-in">
           <div>{showLoader && <LinearProgress></LinearProgress>}</div>
           <Typography style={{ fontSize: "1.6em", marginBottom: "0.4em", textAlign: "center" }}>
-            Create Your OneDataShare Account
+            Create Your New OneDataShare Account
           </Typography>
 
           <ValidatorForm
