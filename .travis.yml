@@ -13,22 +13,19 @@ jobs:
       script:
       - node -e "console.log('Hi from NodeJS!')"
       - npm run build
-      - echo "removing old build"
-      - rm -rf ../resources/static
-      - echo "copying new build"
-      - cp -r build ../resources/static
-      - echo "copy completed"
-      after_script:
-      - cd build && ls
       deploy:
       - provider: script
         skip_cleanup: true
-        script: echo "deploy of ui"
+        script: echo "deploy of ui" && sudo scp -i ../anuj-ubuntu-keypair.pem -o StrictHostKeyChecking=no -r /build ubuntu@ec2-34-202-237-229.compute-1.amazonaws.com:/home/Travis-ODS-UI
       
     - stage: back-end
       language: java
       jdk: openjdk8
       install: true
+      before_script:
+      - echo "removing old build"
+      - rm -rf src/main/resources/static
+      - sudo scp -i ../anuj-ubuntu-keypair.pem -o StrictHostKeyChecking=no -r ubuntu@ec2-34-202-237-229.compute-1.amazonaws.com:/home/Travis-ODS-UI src/main/resources/static      
       script:
       - mvn package
       after_script:
@@ -53,3 +50,4 @@ before_install:
 notifications:
   email:
     - kprabhak@buffalo.edu
+
