@@ -39,7 +39,7 @@ jobs:
         script: cd target && sudo scp -i ../anuj-ubuntu-keypair.pem -o StrictHostKeyChecking=no -r *.jar ubuntu@ec2-34-202-237-229.compute-1.amazonaws.com:/home/Travis-ODS && ssh -n -f -o StrictHostKeyChecking=no ubuntu@ec2-34-202-237-229.compute-1.amazonaws.com 'cd /home/Travis-ODS && ./runProdServer.sh'
 stages:
   - front-end
-  # - back-end
+  - back-end
 before_install:
 - echo "before_install"
 - openssl aes-256-cbc -K $encrypted_fb365c1216b5_key -iv $encrypted_fb365c1216b5_iv -in anuj-ubuntu-keypair.pem.enc -out anuj-ubuntu-keypair.pem -d
