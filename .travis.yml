@@ -37,7 +37,7 @@ jobs:
       deploy:
       - provider: script
         skip_cleanup: true
-        script: ./deploy.sh
+        script: bash ./deploy.sh
 stages:
   - front-end
   - back-end
