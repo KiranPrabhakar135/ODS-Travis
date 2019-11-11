@@ -1,3 +1,7 @@
+# $app_server1 should be set in the repository settings of onedatashare at https://travis-ci.com/ 
+# This is server on which the intermediate UI build is pushed during the deploy event of front-end stage and it is later pulled to the build server during the  before_script event of back-end stage.
+# This is done because Travis doesn't allow to share the data across stages. So the app_server1 is used for temporary storage. Read https://docs.travis-ci.com/user/build-stages/ for more info.
+
 sudo: true
 branches:
   only:
@@ -16,7 +20,7 @@ jobs:
       deploy:
       - provider: script
         skip_cleanup: true
-        script: echo "deploy of ui" && sudo scp -i ../anuj-ubuntu-keypair.pem -o StrictHostKeyChecking=no -r build ubuntu@ec2-34-202-237-229.compute-1.amazonaws.com:/home/Travis-ODS-UI
+        script: sudo scp -i ../ods-prod.pem -o StrictHostKeyChecking=no -r build $app_server1:/home/Travis-ODS-UI
       
     - stage: back-end
       language: java
@@ -25,7 +29,7 @@ jobs:
       before_script:
       - echo "removing old build"
       - rm -rf src/main/resources/static
-      - sudo scp -i anuj-ubuntu-keypair.pem -o StrictHostKeyChecking=no -r ubuntu@ec2-34-202-237-229.compute-1.amazonaws.com:/home/Travis-ODS-UI/build src/main/resources/static    
+      - sudo scp -i ods-prod.pem -o StrictHostKeyChecking=no -r $app_server1:/home/Travis-ODS-UI/build src/main/resources/static    
       script:
       - mvn package
       after_script:
@@ -33,16 +37,16 @@ jobs:
       deploy:
       - provider: script
         skip_cleanup: true
-        script: cd target && sudo scp -i ../anuj-ubuntu-keypair.pem -o StrictHostKeyChecking=no -r *.jar ubuntu@ec2-34-202-237-229.compute-1.amazonaws.com:/home/Travis-ODS && ssh -n -f -o StrictHostKeyChecking=no ubuntu@ec2-34-202-237-229.compute-1.amazonaws.com 'cd /home/Travis-ODS && ./runProdServer.sh'
+        script: ./deploy.sh
 stages:
   - front-end
   - back-end
 before_install:
 - echo "before_install"
-- openssl aes-256-cbc -K $encrypted_fb365c1216b5_key -iv $encrypted_fb365c1216b5_iv -in anuj-ubuntu-keypair.pem.enc -out anuj-ubuntu-keypair.pem -d
+- openssl aes-256-cbc -K $encrypted_fb365c1216b5_key -iv $encrypted_fb365c1216b5_iv -in ods-prod.pem.enc -out ods-prod.pem -d
 - eval "$(ssh-agent -s)"
-- chmod 600 anuj-ubuntu-keypair.pem
-- ssh-add anuj-ubuntu-keypair.pem
+- chmod 600 ods-prod.pem
+- ssh-add ods-prod.pem
 - chmod +x mvnw
 - mvn install:install-file -Dfile=./lib/globus-api-1.1-SNAPSHOT.jar -DgroupId=org.onedatashare.module -DartifactId=globus-api -Dversion=1.1-SNAPSHOT -Dpackaging=jar -DgeneratePom=true -B -V
 
