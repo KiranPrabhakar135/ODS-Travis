@@ -31,7 +31,7 @@ jobs:
       deploy:
       - provider: script
         skip_cleanup: true
-        script: sudo scp -i ../ods-prod.pem -o StrictHostKeyChecking=no -r build $bastion_server:/home/ODS-UI
+        script: sudo scp -i ../$pem_file -o StrictHostKeyChecking=no -r build $bastion_server:/home/ubuntu/ODS-UI
       
     - stage: back-end
       language: java
@@ -40,7 +40,7 @@ jobs:
       before_script:
       - echo "removing old build"
       - rm -rf src/main/resources/static
-      - sudo scp -i ods-prod.pem -o StrictHostKeyChecking=no -r $bastion_server:/home/ODS-UI/build src/main/resources/static    
+      - sudo scp -i $pem_file -o StrictHostKeyChecking=no -r $bastion_server:/home/ubuntu/ODS-UI/build src/main/resources/static    
       script:
       - mvn package
       after_script:
@@ -48,7 +48,7 @@ jobs:
       deploy:
       - provider: script
         skip_cleanup: true
-        script: bash cd target && sudo scp -i ../ods-prod.pem -o StrictHostKeyChecking=no -r *.jar $bastion:/home/ODS-BUILD && ssh -n -f -o StrictHostKeyChecking=no $bastion 'cd /home/ODS-BUILD && ./deployToAppServers.sh'
+        script: bash cd target && sudo scp -i ../$pem_file -o StrictHostKeyChecking=no -r *.jar $bastion:/home/ubuntu/ODS-BUILD && ssh -n -f -o StrictHostKeyChecking=no $bastion 'cd /home/ubuntu/ODS-BUILD && ./deployToAppServers.sh'
 stages:
   - front-end
   - back-end
@@ -56,8 +56,8 @@ before_install:
 - echo "before_install"
 - openssl aes-256-cbc -K $encrypted_fb365c1216b5_key -iv $encrypted_fb365c1216b5_iv -in ods-dev.pem.enc -out ods-dev.pem -d
 - eval "$(ssh-agent -s)"
-- chmod 600 ods-prod.pem
-- ssh-add ods-prod.pem
+- chmod 600 $pem_file
+- ssh-add $pem_file
 - chmod +x mvnw
 - mvn install:install-file -Dfile=./lib/globus-api-1.1-SNAPSHOT.jar -DgroupId=org.onedatashare.module -DartifactId=globus-api -Dversion=1.1-SNAPSHOT -Dpackaging=jar -DgeneratePom=true -B -V
 

@@ -4,12 +4,12 @@ IFS=', ' read -r -a array <<< "$app_servers"
 
 for server in "${array[@]}"
 do
-        sudo scp -i ods-prod.pem -o StrictHostKeyChecking=no -r *.jar ubuntu@$server:/home/ODS-BUILD
-        ssh -n -f -o StrictHostKeyChecking=no -i ods-prod.pem ubuntu@$server 'cd /home/ODS-BUILD && ./runProdServer.sh'
+        sudo scp -i ods-prod.pem -o StrictHostKeyChecking=no -r *.jar ubuntu@$server:/home/ubuntu/ODS-BUILD
+        ssh -n -f -o StrictHostKeyChecking=no -i ods-prod.pem ubuntu@$server 'cd /home/ubuntu/ODS-BUILD && ./runProdServer.sh'
         sleep 5
         echo "Downloading the log file"
-        sudo scp -i ods-prod.pem -o StrictHostKeyChecking=no -r ubuntu@$server:/home/ODS-BUILD/logs/server-log.log $(pwd)
-        log=`cat server-log.log | grep "Started HttpServer"`
+        sudo scp -i ods-prod.pem -o StrictHostKeyChecking=no -r ubuntu@$server:/home/ubuntu/ODS-BUILD/logs/server-log.log $(pwd)
+        log=`cat server-log.log | grep "Started ServerApplication"`
         echo "Checking for success msg"
         if [ "$log" == "" ]; then
                         echo "Failed to deploy on the server $server" | mail -s "Failed: ODS Deployment Report" "$admin_email"
