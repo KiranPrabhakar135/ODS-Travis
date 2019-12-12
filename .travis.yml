@@ -31,7 +31,7 @@ jobs:
       deploy:
       - provider: script
         skip_cleanup: true
-        script: sudo scp -i ../$pem_file -o StrictHostKeyChecking=no -r build $bastion_server:/home/ubuntu/ODS-UI
+        script: sudo scp -i ../$pem_file -o StrictHostKeyChecking=no -r build ubuntu@$bastion_server:/home/ubuntu/ODS-UI
       
     - stage: back-end
       language: java
@@ -40,7 +40,7 @@ jobs:
       before_script:
       - echo "removing old build"
       - rm -rf src/main/resources/static
-      - sudo scp -i $pem_file -o StrictHostKeyChecking=no -r $bastion_server:/home/ubuntu/ODS-UI/build src/main/resources/static    
+      - sudo scp -i $pem_file -o StrictHostKeyChecking=no -r ubuntu@$bastion_server:/home/ubuntu/ODS-UI/build src/main/resources/static    
       script:
       - mvn package
       after_script:
@@ -48,7 +48,7 @@ jobs:
       deploy:
       - provider: script
         skip_cleanup: true
-        script: bash cd target && sudo scp -i ../$pem_file -o StrictHostKeyChecking=no -r *.jar $bastion:/home/ubuntu/ODS-BUILD && ssh -n -f -o StrictHostKeyChecking=no $bastion 'cd /home/ubuntu/ODS-BUILD && ./deployToAppServers.sh'
+        script: bash cd target && sudo scp -i ../$pem_file -o StrictHostKeyChecking=no -r *.jar ubuntu@$bastion:/home/ubuntu/ODS-BUILD && ssh -n -f -o StrictHostKeyChecking=no ubuntu@$bastion 'cd /home/ubuntu/ODS-BUILD && ./deployToAppServers.sh'
 stages:
   - front-end
   - back-end
