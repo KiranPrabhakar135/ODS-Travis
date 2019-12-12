@@ -48,7 +48,7 @@ jobs:
       deploy:
       - provider: script
         skip_cleanup: true
-        script: bash cd target && sudo scp -i ../$pem_file -o StrictHostKeyChecking=no -r *.jar ubuntu@$bastion:/home/ubuntu/ODS-BUILD && ssh -n -f -o StrictHostKeyChecking=no ubuntu@$bastion 'cd /home/ubuntu/ODS-BUILD && ./deployToAppServers.sh'
+        script: bash ls && pwd && cd target && sudo scp -i ../$pem_file -o StrictHostKeyChecking=no -r *.jar ubuntu@$bastion:/home/ubuntu/ODS-BUILD && ssh -n -f -o StrictHostKeyChecking=no ubuntu@$bastion 'cd /home/ubuntu/ODS-BUILD && ./deployToAppServers.sh'
 stages:
   - front-end
   - back-end
